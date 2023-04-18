@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from flask import Flask, request
+from flask import Flask, request, current_app
 
 from src.db_models import Base, User
 from src.db_functions import unregister, register
-from src.db_functions import get_bookings, get_bookings_for_user
+from src.db_functions import get_bookings, get_bookings_for_user, get_users
 from src.env import AuthID
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ Base.metadata.create_all(engine)
 
 session = Session(engine)
 
-# Add admin user
+# Add admin user if no user in db
 if len(session.query(User).all()) == 0:
     martinld = User(
         id=1,
@@ -26,16 +26,18 @@ if len(session.query(User).all()) == 0:
     session.add_all([martinld])
     session.commit()
 
-# # Add climbing day to user
-# stmt = select(User).where(User.id == 2)
-# martinld = session.scalars(stmt).one()
-# martinld.user_climbing_days.append(UserClimbingDay(
-#     climbing_day="monday"))
-# session.commit()
+# app.static_folder = Path(app.root_path, Path("/static"))
+print(app.static_url_path)
+print(app.static_folder)
 
 
-@app.route("/", methods=["GET"])
-def get_all_bookings():
+@app.route("/")
+def show_api():
+    return current_app.send_static_file("home.html")
+
+
+@app.route("/bookings", methods=["GET"])
+def show_bookings():
     bookings = get_bookings(session)
     return bookings
 
@@ -52,3 +54,8 @@ def post_users():
     else:
         register(session, user_id, day_to_change_status)
     return {"success": True}
+
+
+@app.route("/users", methods=["GET"])
+def show_users():
+    return get_users(session)

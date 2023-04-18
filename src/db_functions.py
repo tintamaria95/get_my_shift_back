@@ -7,7 +7,6 @@ def get_bookings(session: Session):
     res = session.query(
         User.id, User.firstname, User.lastname, UserClimbingDay.climbing_day)\
         .join(UserClimbingDay, UserClimbingDay.user_id == User.id).all()
-    print(res)
     bookings = {}
     for t in res:
         if t[0] not in bookings.keys():
@@ -51,3 +50,13 @@ def register(session: Session, user_id, day: str):
     user.user_climbing_days.append(
         UserClimbingDay(climbing_day=day))
     session.commit()
+
+
+def get_users(session: Session):
+    res = session.query(
+        User.id, User.firstname, User.lastname, User.mail).all()
+    users = {}
+    for t in res:
+        users[t[0]] = {
+            "firstname": t[1], "lastname": t[2], "mail": t[3]}
+    return users
