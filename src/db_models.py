@@ -18,6 +18,7 @@ class User(Base):
     lastname: Mapped[str] = mapped_column(String(30))
     mail: Mapped[str] = mapped_column(String(30))
     password: Mapped[str] = mapped_column(String(30))
+    formation: Mapped[str] = mapped_column(String(30))
     user_climbing_days: Mapped[Optional[List["UserClimbingDay"]]] = \
         relationship(
             back_populates="user", cascade="all, delete-orphan")

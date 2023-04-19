@@ -1,0 +1,7 @@
+services:
+  api:
+    container_name: dausport_api
+    build: .
+    ports:
+    - "5000:5000"
+

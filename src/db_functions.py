@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from src.db_models import User, UserClimbingDay
+from db_models import User, UserClimbingDay
 
 
 def get_bookings(session: Session):
@@ -17,6 +17,21 @@ def get_bookings(session: Session):
         else:
             bookings[t[0]]["climbing_days"].append(t[3])
     return bookings
+
+
+def get_user_by_id(session: Session, user_id: int) -> dict:
+    res = session.query(
+        User.id, User.firstname, User.lastname,
+        User.mail, User.password, User.formation).one()
+    user = {
+        "id": res[0],
+        "firstname": res[1],
+        "lastname": res[2],
+        "mail": res[3],
+        "password": res[4],
+        "formation": res[5]
+    }
+    return user
 
 
 def get_bookings_for_user(session: Session, user_id: int):
@@ -60,3 +75,33 @@ def get_users(session: Session):
         users[t[0]] = {
             "firstname": t[1], "lastname": t[2], "mail": t[3]}
     return users
+
+
+def signup(
+        *,
+        session: Session,
+        firstname: str,
+        lastname: str,
+        mail: str,
+        password
+        ):
+    new_user = User(
+        id=1,
+        firstname=firstname,
+        lastname=lastname,
+        mail=mail,
+        password=password
+    )
+    session.add_all([new_user])
+    session.commit()
+
+
+def delete(
+        *,
+        session: Session,
+        user_id: int
+        ):
+    stmt = select(User).where(User.id == user_id)
+    user_to_delete = session.scalars(stmt).one()
+    session.delete(user_to_delete)
+    session.commit()

@@ -81,18 +81,18 @@ def register_or_unregister_to_shift(
     return data
 
 
-mail, password = AuthID['mail'], AuthID['password']
-user_formation = get_user_formation(mail, password)
-print(user_formation)
-phpsessid = get_phpsessid(mail, password)
-print(phpsessid)
-course_programme = (
-    "MY1LCLIMBU220001    SPORT     .   2023-15     Samedi  08:0009:00")
-sess_course = "2022MY1LCLIMBU          22010001"
-data = register_or_unregister_to_shift(
-    phpsessid=phpsessid,
-    user_formation=user_formation,
-    course_program=course_programme,
-    session_course=sess_course
-)
-print(data)
+if __name__ == "__main__":
+    print("Example below:")
+    mail, password = AuthID['mail'], AuthID['password']
+    user_formation = get_user_formation(mail, password)
+    phpsessid = get_phpsessid(mail, password)
+    course_programme = (
+        "MY1LCLIMBU220001    SPORT     .   2023-15     Samedi  08:0009:00")
+    sess_course = "2022MY1LCLIMBU          22010001"
+    data = register_or_unregister_to_shift(
+        phpsessid=phpsessid,
+        user_formation=user_formation,
+        course_program=course_programme,
+        session_course=sess_course
+    )
+    print(data)
