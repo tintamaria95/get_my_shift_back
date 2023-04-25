@@ -19,7 +19,7 @@ It should contain a dictionnary -> AuthID = {'mail': str, 'password': str}, and 
 ### Main files description (src)
 
 - app.py: Flask application description
-- dauphineAPI.py: Fonctions for website scraping
+- dauphineAPI.py: Functions for website scraping
 - db_function.py: Functions for Database manipulation (Add/Update/Remove Users/ Booked Climbing days)
 - db_models.py: SQLAlchemy models
 - main.py: Function to call that read the database and make the bookings for each user. (Can be called with CRON job for total automatisation)
